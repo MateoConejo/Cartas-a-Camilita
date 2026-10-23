@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Cartas a Camilita</title>
+    <!-- Favicon con tu imagen de la carta con corona -->
+    <link rel="icon" type="image/png" href="carta.png">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Gloock&family=Reenie+Beanie&family=Jost:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #dfe8f7;
+            --ink: #1d3f9a;
+            --cream: #fdf8f1;
+            --paper: #f1efe7;
+            --line: #b9c0cc;
+            --shadow: rgba(29, 63, 154, .25);
+            --txt: #1d3f9a;
+            box-sizing: border-box;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px)
+        }
+
+        @media (prefers-color-scheme:dark) {
+            :root:not([data-theme="light"]) {
+                --bg: #0f1a38;
+                --cream: #f6efe4;
+                --shadow: rgba(0, 0, 0, .5);
+                --txt: #bcd0ff
+            }
+        }
+
+        :root[data-theme="dark"] {
+            --bg: #0f1a38;
+            --cream: #f6efe4;
+            --shadow: rgba(0, 0, 0, .5);
+            --txt: #bcd0ff
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%
+        }
+
+        body {
+            background: var(--bg);
+            font-family: 'Jost', system-ui, sans-serif;
+            color: var(--txt);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 24px 16px;
+            text-align: center
+        }
+
+        h1 {
+            font-family: 'Gloock', serif;
+            font-weight: 400;
+            font-size: 1.6rem;
+            margin: 0 0 6px;
+            letter-spacing: .04em
+        }
+
+        .hint {
+            font-size: .9rem;
+            opacity: .8;
+            margin: 0 0 22px
+        }
+
+        .stage {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            align-items: center;
+            justify-content: center
+        }
+
+        .deck {
+            width: min(320px, 86vw);
+            margin: 0;
+            background: var(--ink);
+            border-radius: 16px;
+            padding: 16px 16px 14px;
+            box-shadow: 0 12px 30px var(--shadow);
+            color: #fdf8f1
+        }
+
+        .plat {
+            position: relative;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #16307a;
+            border-radius: 10px;
+            overflow: hidden
+        }
+
+        .vinyl {
+            width: 128px;
+            height: 128px;
+            border-radius: 50%;
+            background: repeating-radial-gradient(circle, #111 0 2px, #1d1d1d 2px 4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, .5)
+        }
+
+        .vinyl i {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #dfe8f7;
+            border: 6px solid #2a4fb0;
+            display: block;
+            position: relative
+        }
+
+        .vinyl i::after {
+            content: "";
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #16307a;
+            left: 11px;
+            top: 11px
+        }
+
+        .vinyl.play {
+            animation: spin 3s linear infinite
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        /* 🎵 BRAZO: Reposo en 0deg (flecha roja), reproduciendo apunta hacia el centro (45deg - flecha amarilla) */
+        .arm {
+            position: absolute;
+            right: 28px;
+            top: 16px;
+            width: 5px;
+            height: 76px;
+            background: #fdf8f1;
+            border-radius: 3px;
+            transform-origin: 50% 4px;
+            transform: rotate(0deg);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, .3);
+            transition: transform .65s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 3
+        }
+
+        .arm::before {
+            content: "";
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            background: #fdf8f1;
+            border: 2px solid #2a4fb0
+        }
+
+        .arm::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: -3px;
+            width: 11px;
+            height: 13px;
+            background: #fdf8f1;
+            border-radius: 2px;
+            transform: rotate(10deg)
+        }
+
+        .arm.lift {
+            transform: rotate(15deg) scale(1.04)
+        }
+
+        .arm.on {
+            animation: armDrop .65s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+                armGroove 3s ease-in-out .65s infinite alternate
+        }
+
+        @keyframes armDrop {
+            0% {
+                transform: rotate(15deg);
+            }
+
+            100% {
+                transform: rotate(45deg);
+            }
+        }
+
+        @keyframes armGroove {
+            from {
+                transform: rotate(43.5deg);
+            }
+
+            to {
+                transform: rotate(46.5deg);
+            }
+        }
+
+        .np {
+            margin: 12px 0 8px;
+            font-size: .95rem;
+            min-height: 1.3em
+        }
+
+        .tracks {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            flex-wrap: wrap
+        }
+
+        .tracks button {
+            font: inherit;
+            font-size: .8rem;
+            border: 1px solid #fdf8f1;
+            background: transparent;
+            color: #fdf8f1;
+            border-radius: 999px;
+            padding: 5px 11px;
+            cursor: pointer;
+            transition: background .2s, color .2s
+        }
+
+        .tracks button.sel {
+            background: #fdf8f1;
+            color: var(--ink)
+        }
+
+        .deck-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px
+        }
+
+        .deck a {
+            display: none;
+            color: #fdf8f1;
+            font-size: .85rem
+        }
+
+        .deck a.on {
+            display: inline-block
+        }
+
+        .reset-song-btn {
+            display: none;
+            font: inherit;
+            font-size: .76rem;
+            border: 1px solid rgba(253, 248, 241, .75);
+            background: rgba(255, 255, 255, .1);
+            color: #fdf8f1;
+            border-radius: 999px;
+            padding: 3px 12px;
+            cursor: pointer;
+            transition: background .2s, color .2s
+        }
+
+        .reset-song-btn.on {
+            display: inline-block
+        }
+
+        .reset-song-btn:hover {
+            background: #fdf8f1;
+            color: var(--ink)
+        }
+
+        .book {
+            width: min(300px, 78vw);
+            aspect-ratio: 3/4;
+            border: 0;
+            padding: 0;
+            cursor: pointer;
+            border-radius: 14px;
+            background: var(--cream);
+            box-shadow: 0 14px 34px var(--shadow);
+            position: relative;
+            overflow: hidden;
+            transition: transform .3s
+        }
+
+        .book:hover {
+            transform: translateY(-6px) rotate(-1deg)
+        }
+
+        .book svg.pat {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%
+        }
+
+        .label {
+            position: absolute;
+            left: 14%;
+            right: 14%;
+            top: 32%;
+            background: var(--cream);
+            border: 2px solid #1b1b1b;
+            border-radius: 16px;
+            padding: 14px 16px 16px;
+            text-align: left
+        }
+
+        .label b {
+            font-family: 'Gloock', serif;
+            font-weight: 400;
+            font-size: 1.7rem;
+            letter-spacing: .03em;
+            color: #1b1b1b;
+            display: block;
+            text-align: center;
+            border-bottom: 1px solid #1b1b1b;
+            padding-bottom: 6px
+        }
+
+        .label span {
+            display: block;
+            margin-top: 10px;
+            color: #1b1b1b;
+            font-size: .95rem
+        }
+
+        .label em {
+            display: block;
+            margin-top: 4px;
+            font-style: normal;
+            font-size: .8rem;
+            color: #1d3f9a;
+            letter-spacing: .08em
+        }
+
+        /* 🧩 ESTILOS DEL ROMPECABEZAS */
+        .puzzle-card {
+            width: min(320px, 86vw);
+            background: var(--ink);
+            border-radius: 18px;
+            padding: 16px;
+            box-shadow: 0 12px 30px var(--shadow);
+            color: #fdf8f1;
+            display: flex;
+            flex-direction: column;
+            align-items: center
+        }
+
+        .puzzle-board {
+            width: 100%;
+            align-self: stretch;
+            height: 0;
+            padding-bottom: 75%;
+            background: #16307a;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(253, 248, 241, .2);
+            transition: border-color .4s ease
+        }
+
+        .pz-tile {
+            position: absolute;
+            width: 33.3333%;
+            height: 33.3333%;
+            padding: 2.5px;
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            transition:
+                left .42s cubic-bezier(0.22, 1, 0.36, 1),
+                top .42s cubic-bezier(0.22, 1, 0.36, 1),
+                transform .22s ease,
+                padding .35s ease;
+            z-index: 1
+        }
+
+        .pz-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            border-radius: 6px;
+            background: #234299;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, .25);
+            transition: border-radius .35s ease, box-shadow .25s ease, filter .2s ease
+        }
+
+        .pz-inner img {
+            position: absolute;
+            width: 300%;
+            height: 300%;
+            max-width: none;
+            object-fit: cover;
+            pointer-events: none;
+            display: block
+        }
+
+        .pz-tile:hover .pz-inner {
+            filter: brightness(1.07)
+        }
+
+        .pz-tile.sel {
+            transform: scale(0.88);
+            z-index: 10
+        }
+
+        .pz-tile.sel .pz-inner {
+            outline: 2.5px solid #fdf8f1;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, .55)
+        }
+
+        .pz-tile.moving {
+            z-index: 8
+        }
+
+        .puzzle-board.solved {
+            border-color: #ffb6c1;
+            box-shadow: 0 0 18px rgba(255, 182, 193, .55)
+        }
+
+        .puzzle-board.solved .pz-tile {
+            padding: 0;
+            cursor: default
+        }
+
+        .puzzle-board.solved .pz-inner {
+            border-radius: 0;
+            box-shadow: none
+        }
+
+        .pz-text {
+            margin: 12px 0 8px;
+            font-size: .92rem;
+            color: #fdf8f1;
+            line-height: 1.35
+        }
+
+        .pz-btn {
+            font: inherit;
+            font-size: .78rem;
+            border: 1px solid rgba(253, 248, 241, .7);
+            background: transparent;
+            color: #fdf8f1;
+            border-radius: 999px;
+            padding: 4px 12px;
+            cursor: pointer;
+            transition: background .2s, color .2s
+        }
+
+        .pz-btn:hover {
+            background: #fdf8f1;
+            color: var(--ink)
+        }
+
+        /* 🎀 LIENZO DE CONFETI ROSITA */
+        #pink-confetti {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 26, 56, .65);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 5
+        }
+
+        .overlay.on {
+            display: flex
+        }
+
+        .wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            position: relative
+        }
+
+        .spread {
+            position: relative;
+            display: flex;
+            background: var(--paper);
+            border-radius: 10px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, .45);
+            animation: up .45s ease
+        }
+
+        @keyframes up {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(.96)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .pg {
+            flex: 1;
+            position: relative;
+            background-image: repeating-linear-gradient(transparent 0 calc(var(--lh) - 1px), var(--line) calc(var(--lh) - 1px) var(--lh));
+            background-position: 0 var(--top)
+        }
+
+        .pg::before {
+            content: "";
+            position: absolute;
+            left: calc(var(--L) - 10px);
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: var(--line)
+        }
+
+        .gut {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 36px;
+            margin-left: -18px;
+            background: linear-gradient(90deg, transparent, rgba(0, 0, 0, .2) 50%, transparent);
+            pointer-events: none
+        }
+
+        .vp {
+            position: absolute;
+            overflow: hidden;
+            left: var(--L);
+            right: var(--R);
+            top: var(--top)
+        }
+
+        #txt {
+            column-fill: auto;
+            transition: transform .5s ease;
+            font-family: 'Reenie Beanie', cursive;
+            color: #1a1a1a;
+            line-height: var(--lh);
+            font-size: calc(var(--lh) * .80);
+            orphans: 1;
+            widows: 1;
+            text-align: left
+        }
+
+        #txt p {
+            margin: 0 0 var(--lh);
+            /* Ajuste sutil para que la base de la letra manuscrita descanse justo sobre la línea */
+            transform: translateY(calc(var(--lh) * 0.14));
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: #fdf8f1;
+            font-size: .9rem
+        }
+
+        .nav button {
+            border: 1px solid #fdf8f1;
+            background: transparent;
+            color: #fdf8f1;
+            border-radius: 999px;
+            width: 36px;
+            height: 36px;
+            font-size: 1.2rem;
+            cursor: pointer
+        }
+
+        .nav button:disabled {
+            opacity: .3;
+            cursor: default
+        }
+
+        .close {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            border: 0;
+            background: #fdf8f1;
+            color: #333;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 2
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="pink-confetti"></canvas>
+
+    <h1>¡Felices 2 años mi amor!</h1>
+    <p class="hint">Elige una canción, abre el cuaderno o arma nuestro rompecabezas mi amor</p>
+
+    <div class="stage">
+        <!-- Tocadiscos -->
+        <div class="deck">
+            <div class="plat">
+                <div class="vinyl" id="vn"><i></i></div>
+                <div class="arm" id="arm"></div>
+            </div>
+            <div class="np" id="np">Elige una canción</div>
+            <div class="tracks" id="tk"></div>
+            <div id="emb"></div>
+            <div class="deck-actions">
+                <a id="spl" href="#" target="_blank" rel="noopener">Escuchar en Spotify ↗</a>
+                <button type="button" class="reset-song-btn" id="reset-song">✕ Detener y volver al inicio</button>
+            </div>
+        </div>
+
+        <!-- Cuaderno -->
+        <button class="book" id="open" aria-label="Abrir cuaderno">
+            <svg class="pat" viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                <defs>
+                    <g id="sp" fill="#2a4fb0" stroke="#2a4fb0">
+                        <path d="M0 30 Q2 0 0 -34" fill="none" stroke-width="1" />
+                        <ellipse cx="-6" cy="-8" rx="4" ry="7" transform="rotate(-30 -6 -8)" />
+                        <ellipse cx="6" cy="-14" rx="4" ry="7" transform="rotate(30 6 -14)" />
+                        <ellipse cx="-6" cy="-22" rx="4" ry="7" transform="rotate(-30 -6 -22)" />
+                        <ellipse cx="6" cy="-28" rx="4" ry="7" transform="rotate(30 6 -28)" />
+                        <ellipse cx="0" cy="-36" rx="3.5" ry="7" />
+                        <ellipse cx="-6" cy="4" rx="4" ry="7" transform="rotate(-30 -6 4)" />
+                        <ellipse cx="6" cy="10" rx="4" ry="7" transform="rotate(30 6 10)" />
+                    </g>
+                </defs>
+            </svg>
+            <svg class="pat" viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                <defs>
+                    <filter id="nz">
+                        <feTurbulence baseFrequency=".9" numOctaves="2" seed="3" />
+                        <feColorMatrix values="0 0 0 0 .1 0 0 0 0 .2 0 0 0 0 .5 0 0 0 .1 0" />
+                    </filter>
+                    <linearGradient id="sg" x1="0" x2="1">
+                        <stop offset="0" stop-color="#14307f" />
+                        <stop offset="1" stop-color="#2a4fb0" />
+                    </linearGradient>
+                </defs>
+                <rect width="300" height="400" filter="url(#nz)" />
+                <rect width="24" height="400" fill="url(#sg)" />
+                <line x1="31" y1="8" x2="31" y2="392" stroke="#1d3f9a" stroke-width="1.5" stroke-dasharray="6 5" />
+                <rect x="38" y="10" width="252" height="380" rx="10" fill="none" stroke="#1d3f9a" stroke-width="1.5" />
+                <rect x="43" y="15" width="242" height="370" rx="7" fill="none" stroke="#1d3f9a" stroke-width=".6" />
+                <rect x="262" width="12" height="400" fill="#1d3f9a" opacity=".9" />
+                <path d="M214 330h18v70l-9-9-9 9z" fill="#7fa0e6" />
+                <g fill="#1d3f9a">
+                    <circle cx="54" cy="26" r="3" />
+                    <circle cx="54" cy="374" r="3" />
+                    <circle cx="246" cy="26" r="3" />
+                    <circle cx="246" cy="374" r="3" />
+                </g>
+            </svg>
+            <div class="label"><b>CARTITAS</b><span id="nm">ㅤPara Camilita Alejandra</span></div>
+        </button>
+
+        <!-- 🧩 Rompecabezas al otro lado del cuaderno -->
+        <div class="puzzle-card">
+            <div class="puzzle-board" id="pz-board"></div>
+            <p class="pz-text" id="pz-msg">Yo sé que te gustan los rompecabezas, entonces te hice uno chiquito que estoy
+                seguro te va a hacer acordar de nosotros</p>
+            <button class="pz-btn" id="pz-shuf">Mezclar piezas</button>
+        </div>
+    </div>
+
+    <div class="overlay" id="ov">
+        <div class="wrap">
+            <button class="close" id="cl" aria-label="Cerrar">×</button>
+            <div class="spread" id="spr">
+                <div class="pg"></div>
+                <div class="pg"></div>
+                <div class="vp" id="vp">
+                    <div id="txt">
+                        <p>Hola mi amor, como estás preciosa?</p>
+                        <p>Hoy cumplimos 2 añotes juntos amor. Ahorita que estoy escribiendo esto me siento muy feliz
+                            porque pude cumplir contigo esta meta. Cada vez que pienso en todo lo que hemos pasado me da
+                            mucha felicidad, porque sé que he encontrado a mi personita especial. A esa personita que no
+                            se encuentra más que 1 vez en la vida.</p>
+                        <p>Este año ha sido complicado. Realmente ha sido muy muy muy difícil. Siento que nuestro amor
+                            se ha puesto a prueba de muchas formas pero de alguna manera hemos encontrado como seguir
+                            juntos como ecuipo contra el mundo.</p>
+                        <p>A veces pienso en cuando te terminé, no lo pienso hacer de nuevo pero lo pienso y me hace
+                            sentir triste. Yo te quiero pedir perdón amor, de verdad por hacerte pasar todo eso. Cada
+                            vez que me acuerdo me siento culpable porque herí a ese corazón tan lindo que tienes y me
+                            hace enojarme conmigo por no ser más inteligente y solo hablarlo. Yo sé que ya pasó hace
+                            mucho pero de verdad sentía a veces que es algo que tenía que decírtelo. Creeme que nunca me
+                            van a dar las palabras para decirte lo arrepentido que estoy de eso.</p>
+                        <p>Estos mesesitos que hemos estado a distancia han sido muy difíciles para mi. Siempre tuve
+                            dudas de la distancia. ¿Qué tal si conoces a alguien más? eso era lo que pensaba muchos de
+                            los días. Pero ahora no, siento que hemos podido confiar más en nosotros y tambien ser un
+                            poquito más independientes.</p>
+                        <p>Lo cierto es que te extraño mucho mi amor. Cada día que pasa necesito un abracito tuyo. No
+                            porque tenga malos días necesariamente, sino porque simplemente cuando tenía al menos 1
+                            abrazo tuyo al día era mi recarga emocional y mental.</p>
+                        <p>Pero todo esto me ha llevado a darme cuenta de algo. Tu eres mi fuente de recarga. Lejos o
+                            cerca siempre encuentras formas de hacerme sentir mejor y aunque sea un poco más
+                            esperanzado. Yo siento que he tenido muchos breakdowns mentales últimamente. Que no contesto
+                            por largos periodos de tiempo o días, que de plano estoy totalmente desconectado de la
+                            realidad. Pero tú siempre me salvas.</p>
+                        <p>Diría que eres parte importante de mi vida pero ya no lo eres, eres mi vida completa, ya no
+                            solo una partecita. Mi amor, este día quiero que sepas que eres la persona más luchadora,
+                            fuerte y bonita que he conocido y que el mundo tiene. A mi me vuelve loco tu forma de ser
+                            (referencia referencia), realmente me tienes loco por ti y si algún día me llegaras a faltar
+                            yo no sé cómo continuaría.</p>
+                        <p>Algunos piensan que no se encuentra al amor de tu vida hasta la novia 100. La matemática dice
+                            que en promedio debes tener pareja 15 veces para estadísticamente encontrar al amor de tu
+                            vida. Otros dicen que no la encuentras, sino que ella te encuentra. La verdad, no sé en cual
+                            creer.</p>
+                        <p>Pero lo que sí sé es que yo ya encontré al amor de mi vida. Y esa eres tú. Hemos pasado y
+                            seguiremos pasando por momentos difíciles. Momentos en los que será más fácil solo decir
+                            adiós y olvidarnos. Pero yo elijo creer que por más que duela, por más que cueste o por más
+                            que tengamos que seguir a distancia por algún tiempo más, vale la pena.</p>
+                        <p>Porque algún día podremos dormir juntitos en la misma cama, en el mismo cuarto con nuestros
+                            hijos peluche y nuestros hijos reales. Porque algún día no tendremos que volver a decir
+                            adiós más que para ir al trabajo. Porque cuando tengamos nuestra boda, nos hagamos viejitos
+                            y veamos todo lo que pasamos para llegar ahí, nos daremos cuenta que todo valió la pena.</p>
+                        <p>Yo creo en nosotros, creo que vamos a tener un “y vivieron felices para siempre”. Simplemente
+                            tenemos que esperar mi amor. Tu sabes que yo siempre voy a amarte con todo mi corazón, mi
+                            alma, mi cuerpo y mi pulmón derecho.</p>
+                        <p>Tu sabes que no puedo hacer estas cosas en público porque me rareo pero aquí me tienes, en
+                            plena biblioteca casi llorando por esta cartita.</p>
+                        <p>Te amo princesa y espero que quieras quedarte conmigo al menos un añito más, e ir renovando
+                            nuestro contrato cada año.</p>
+                        <p>Con todo el amor del mundo,<br>Mateito</p>
+                        <p>PD: te va a llegar un regalito a las 11am. Entonces estate atenta al teléfono porque te van a
+                            llamar. O si estás viendo esto cuando ya llegó tu regalo espero que te haya gustado, viene
+                            desde el fondo de mi corazón. Y no, por mas que pongas cara tierna no te voy a decir antes
+                            de que llegue. Mi bebé impaciente.</p>
+                    </div>
+                </div>
+                <div class="gut"></div>
+            </div>
+            <div class="nav"><button id="pv" aria-label="Anterior">‹</button><span id="pn"></span><button id="nx"
+                    aria-label="Siguiente">›</button></div>
+        </div>
+    </div>
+
+    <script>
+        /* 🔊 SISTEMA DE AUDIO SINTETIZADO CON WEB AUDIO API */
+        var audioCtx = null;
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        // Sonido de clic sutil para botones y piezas
+        function playClickSound() {
+            try {
+                initAudio();
+                var osc = audioCtx.createOscillator();
+                var gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(220, audioCtx.currentTime + 0.05);
+                gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.05);
+            } catch (e) { }
+        }
+
+        // Sonido mejorado de pasar página en el cuaderno (más realista y terso)
+        function playPageFlipSound() {
+            try {
+                initAudio();
+                var duration = 0.18;
+                var bufferSize = audioCtx.sampleRate * duration;
+                var buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                var data = buffer.getChannelData(0);
+                for (var i = 0; i < bufferSize; i++) {
+                    data[i] = (Math.random() * 2 - 1) * Math.sin((i / bufferSize) * Math.PI) * 0.7;
+                }
+                var noise = audioCtx.createBufferSource();
+                noise.buffer = buffer;
+
+                var filter = audioCtx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.setValueAtTime(1600, audioCtx.currentTime);
+                filter.Q.setValueAtTime(2.5, audioCtx.currentTime);
+
+                var gain = audioCtx.createGain();
+                gain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime + 0.04);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(audioCtx.destination);
+                noise.start();
+            } catch (e) { }
+        }
+
+        // Sonido melódico de éxito al terminar el rompecabezas
+        function playSuccessSound() {
+            try {
+                initAudio();
+                var notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                notes.forEach(function (freq, index) {
+                    var osc = audioCtx.createOscillator();
+                    var gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime + index * 0.09);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime + index * 0.09);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + index * 0.09 + 0.35);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(audioCtx.currentTime + index * 0.09);
+                    osc.stop(audioCtx.currentTime + index * 0.09 + 0.35);
+                });
+            } catch (e) { }
+        }
+
+        (function () {
+            var svg = document.querySelector('.pat'), NS = 'http://www.w3.org/2000/svg';
+            for (var r = 0; r < 5; r++)for (var c = 0; c < 5; c++) {
+                var u = document.createElementNS(NS, 'use'); u.setAttribute('href', '#sp');
+                var x = 30 + c * 60 + (r % 2 ? 30 : 0), y = 40 + r * 85, a = (r * 7 + c * 13) % 40 - 20;
+                u.setAttribute('transform', 'translate(' + x + ' ' + y + ') rotate(' + a + ') scale(1.15)'); svg.appendChild(u);
+            }
+
+            var songs = [
+                { t: '309 — Nsqk', u: 'https://open.spotify.com/track/0q37bjxhRwzjtZynlU9ZsI' },
+                { t: 'INAROW62. — Alvaro Diaz', u: 'https://open.spotify.com/track/5Yhti6baaZnDyzehjTuAwZ' },
+                { t: '3 Notas — AU-D', u: 'https://open.spotify.com/track/2fKUibSpLTPYr92m5NArh6' }];
+            var tk = document.getElementById('tk'), vn = document.getElementById('vn'), arm = document.getElementById('arm'), np = document.getElementById('np'), spl = document.getElementById('spl'), emb = document.getElementById('emb'), resetSongBtn = document.getElementById('reset-song');
+            var armTimer = null;
+
+            songs.forEach(function (s, i) {
+                var b = document.createElement('button'); b.textContent = 'Canción ' + (i + 1);
+                b.onclick = function () {
+                    playClickSound();
+                    [].forEach.call(tk.children, function (x) { x.classList.remove('sel') }); b.classList.add('sel');
+                    np.textContent = '♪ ' + s.t;
+                    spl.href = s.u;
+                    spl.classList.add('on');
+                    resetSongBtn.classList.add('on');
+
+                    clearTimeout(armTimer);
+                    vn.classList.remove('play');
+                    arm.classList.remove('on');
+                    arm.classList.add('lift');
+                    void arm.offsetWidth;
+
+                    armTimer = setTimeout(function () {
+                        arm.classList.remove('lift');
+                        arm.classList.add('on');
+                        vn.classList.add('play');
+                    }, 200);
+
+                    emb.innerHTML = ''; var m = s.u.match(/open\.spotify\.com\/track\/([A-Za-z0-9]+)/);
+                    if (m) { var f = document.createElement('iframe'); f.src = 'https://open.spotify.com/embed/track/' + m[1]; f.width = '100%'; f.height = '80'; f.allow = 'encrypted-media'; f.style.cssText = 'border:0;border-radius:12px;margin-top:10px'; emb.appendChild(f); }
+                };
+                tk.appendChild(b);
+            });
+
+            resetSongBtn.onclick = function () {
+                playClickSound();
+                clearTimeout(armTimer);
+                [].forEach.call(tk.children, function (x) { x.classList.remove('sel') });
+                vn.classList.remove('play');
+                arm.classList.remove('on', 'lift');
+                np.textContent = 'Elige una canción';
+                emb.innerHTML = '';
+                spl.classList.remove('on');
+                spl.href = '#';
+                resetSongBtn.classList.remove('on');
+            };
+
+            var confettiCanvas = document.getElementById('pink-confetti');
+            var ctx = confettiCanvas.getContext('2d');
+            var confettiPieces = [];
+            var confettiAnimId = null;
+
+            function resizeConfetti() {
+                confettiCanvas.width = window.innerWidth;
+                confettiCanvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeConfetti);
+            resizeConfetti();
+
+            function launchPinkConfetti() {
+                playSuccessSound();
+                resizeConfetti();
+                var pinkColors = ['#ff69b4', '#ff1493', '#ffb6c1', '#ffc0cb', '#ff85a2', '#ff4d94', '#f48fb1', '#fce4ec', '#ff9ebb'];
+                for (var i = 0; i < 220; i++) {
+                    var fromCenter = i < 90;
+                    confettiPieces.push({
+                        x: fromCenter ? (confettiCanvas.width * 0.5 + (Math.random() - 0.5) * 220) : (Math.random() * confettiCanvas.width),
+                        y: fromCenter ? (confettiCanvas.height * 0.45) : (-20 - Math.random() * confettiCanvas.height * 0.6),
+                        vx: fromCenter ? ((Math.random() - 0.5) * 14) : ((Math.random() - 0.5) * 4),
+                        vy: fromCenter ? (-Math.random() * 14 - 4) : (Math.random() * 4 + 2.5),
+                        size: Math.random() * 8 + 6,
+                        color: pinkColors[Math.floor(Math.random() * pinkColors.length)],
+                        rot: Math.random() * Math.PI * 2,
+                        rotSpeed: (Math.random() - 0.5) * 0.2,
+                        wobble: Math.random() * 10,
+                        wobbleSpeed: Math.random() * 0.1 + 0.04,
+                        shape: i % 5 === 0 ? 'heart' : (i % 2 === 0 ? 'rect' : 'circle')
+                    });
+                }
+                if (!confettiAnimId) animateConfetti();
+            }
+
+            function animateConfetti() {
+                ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+                for (var i = confettiPieces.length - 1; i >= 0; i--) {
+                    var p = confettiPieces[i];
+                    p.vy += 0.18; p.vx *= 0.99; p.wobble += p.wobbleSpeed;
+                    p.x += p.vx + Math.sin(p.wobble) * 1.3; p.y += p.vy; p.rot += p.rotSpeed;
+                    ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.fillStyle = p.color;
+                    if (p.shape === 'heart') {
+                        var s = p.size * 0.08; ctx.scale(s, s);
+                        ctx.beginPath(); ctx.moveTo(0, 3);
+                        ctx.bezierCurveTo(0, 0, -5, -5, -10, -5);
+                        ctx.bezierCurveTo(-18, -5, -18, 6, -18, 6);
+                        ctx.bezierCurveTo(-18, 14, -10, 20, 0, 26);
+                        ctx.bezierCurveTo(10, 20, 18, 14, 18, 6);
+                        ctx.bezierCurveTo(18, 6, 18, -5, 10, -5);
+                        ctx.bezierCurveTo(5, -5, 0, 0, 0, 3); ctx.fill();
+                    } else if (p.shape === 'circle') {
+                        ctx.beginPath(); ctx.ellipse(0, 0, p.size * 0.55, p.size * 0.35, 0, 0, Math.PI * 2); ctx.fill();
+                    } else {
+                        ctx.fillRect(-p.size / 2, -p.size / 3, p.size, p.size * 0.66);
+                    }
+                    ctx.restore();
+                    if (p.y > confettiCanvas.height + 40) confettiPieces.splice(i, 1);
+                }
+                if (confettiPieces.length > 0) confettiAnimId = requestAnimationFrame(animateConfetti);
+                else { confettiAnimId = null; ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height); }
+            }
+
+            var NEW_IMG = 'WhatsApp Image 2026-10-22 at 15.50.34.jpeg';
+            var OLD_IMG = 'WhatsApp Image 2026-10-22 at 14.53.16.jpeg';
+            var board = document.getElementById('pz-board');
+            var shufBtn = document.getElementById('pz-shuf');
+
+            var posOfPiece = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+            var tiles = [], imgs = [], selectedPiece = null, hasStartedPlaying = false;
+
+            for (var p = 0; p < 9; p++) {
+                (function (pieceIndex) {
+                    var tile = document.createElement('div'); tile.className = 'pz-tile';
+                    var inner = document.createElement('div'); inner.className = 'pz-inner';
+                    var img = document.createElement('img'); img.src = NEW_IMG; img.alt = '';
+                    var origRow = Math.floor(pieceIndex / 3), origCol = pieceIndex % 3;
+                    img.style.left = (-origCol * 100) + '%'; img.style.top = (-origRow * 100) + '%';
+                    inner.appendChild(img); tile.appendChild(inner);
+
+                    tile.onclick = function () {
+                        playClickSound();
+                        if (board.classList.contains('solved')) return;
+                        if (selectedPiece === null) { selectedPiece = pieceIndex; tile.classList.add('sel'); }
+                        else if (selectedPiece === pieceIndex) { tile.classList.remove('sel'); selectedPiece = null; }
+                        else {
+                            var first = selectedPiece, second = pieceIndex;
+                            tiles[first].classList.remove('sel'); selectedPiece = null;
+                            tiles[first].classList.add('moving'); tiles[second].classList.add('moving');
+                            setTimeout(function () { tiles[first].classList.remove('moving'); tiles[second].classList.remove('moving'); }, 430);
+                            var tmp = posOfPiece[first]; posOfPiece[first] = posOfPiece[second]; posOfPiece[second] = tmp;
+                            updatePositions(true);
+                        }
+                    };
+                    imgs.push(img); tiles.push(tile); board.appendChild(tile);
+                })(p);
+            }
+
+            var testImg = new Image();
+            testImg.onload = function () {
+                if (testImg.naturalWidth && testImg.naturalHeight) {
+                    board.style.paddingBottom = ((testImg.naturalHeight / testImg.naturalWidth) * 100).toFixed(2) + '%';
+                }
+            };
+            testImg.onerror = function () {
+                imgs.forEach(function (im) { im.src = OLD_IMG; });
+                var fallbackImg = new Image();
+                fallbackImg.onload = function () {
+                    if (fallbackImg.naturalWidth && fallbackImg.naturalHeight) {
+                        board.style.paddingBottom = ((fallbackImg.naturalHeight / fallbackImg.naturalWidth) * 100).toFixed(2) + '%';
+                    }
+                };
+                fallbackImg.src = OLD_IMG;
+            };
+            testImg.src = NEW_IMG;
+
+            function updatePositions(fromUserMove) {
+                for (var piece = 0; piece < 9; piece++) {
+                    var currentSlot = posOfPiece[piece], row = Math.floor(currentSlot / 3), col = currentSlot % 3;
+                    tiles[piece].style.left = (col * 33.3333) + '%';
+                    tiles[piece].style.top = (row * 33.3333) + '%';
+                }
+                var isSolved = posOfPiece.every(function (slot, piece) { return slot === piece; });
+                board.classList.toggle('solved', isSolved);
+                if (isSolved && fromUserMove && hasStartedPlaying) launchPinkConfetti();
+            }
+
+            function shufflePuzzle() {
+                playClickSound();
+                if (selectedPiece !== null) { tiles[selectedPiece].classList.remove('sel'); selectedPiece = null; }
+                board.classList.remove('solved');
+                var slots = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+                do {
+                    for (var i = slots.length - 1; i > 0; i--) {
+                        var j = Math.floor(Math.random() * (i + 1));
+                        var temp = slots[i]; slots[i] = slots[j]; slots[j] = temp;
+                    }
+                } while (slots.every(function (slot, piece) { return slot === piece; }));
+                for (var p = 0; p < 9; p++) posOfPiece[p] = slots[p];
+                hasStartedPlaying = true; updatePositions(false);
+            }
+
+            shufBtn.onclick = shufflePuzzle;
+            updatePositions(false);
+            setTimeout(shufflePuzzle, 60);
+
+            var ov = document.getElementById('ov'), spr = document.getElementById('spr'), vp = document.getElementById('vp'), txt = document.getElementById('txt'), pn = document.getElementById('pn'), pv = document.getElementById('pv'), nx = document.getElementById('nx');
+            var idx = 0, total = 1, unit = 0;
+            function go(i) {
+                playPageFlipSound();
+                idx = Math.max(0, Math.min(total - 1, i));
+                txt.style.transform = 'translateX(' + (-idx * 2 * unit) + 'px)';
+                pn.textContent = (idx + 1) + ' / ' + total;
+                pv.disabled = idx === 0;
+                nx.disabled = idx === total - 1;
+            }
+            function layout() {
+                var W = Math.round(Math.min(820, innerWidth * .94));
+                if (W % 2 !== 0) W--; // Asegurar ancho par para evitar subpíxeles en las columnas
+                var small = W < 560, lh = small ? 26 : 34, L = small ? 28 : 42, R = small ? 14 : 26;
+                var H = Math.max(6, Math.floor(Math.min(innerHeight * .74, 544) / lh)) * lh;
+                spr.style.cssText = 'width:' + W + 'px;height:' + (H + 2 * lh) + 'px;--lh:' + lh + 'px;--L:' + L + 'px;--R:' + R + 'px;--top:' + lh + 'px';
+                var g = L + R, cw = (W - 2 * L - 2 * R) / 2;
+                unit = cw + g;
+                vp.style.height = H + 'px';
+                txt.style.height = H + 'px';
+                txt.style.columnWidth = cw + 'px';
+                txt.style.columnGap = g + 'px';
+                var cols = Math.max(2, Math.round((txt.scrollWidth + g) / unit));
+                total = Math.ceil(cols / 2);
+                go(Math.min(idx, total - 1));
+            }
+            function open() {
+                playPageFlipSound();
+                ov.classList.add('on'); idx = 0; layout(); if (document.fonts) document.fonts.ready.then(layout);
+            }
+            function close() {
+                playClickSound();
+                ov.classList.remove('on');
+            }
+            document.getElementById('open').onclick = open;
+            document.getElementById('cl').onclick = close;
+            ov.onclick = function (e) { if (e.target === ov) close() };
+            pv.onclick = function () { go(idx - 1) }; nx.onclick = function () { go(idx + 1) };
+            addEventListener('resize', function () { if (ov.classList.contains('on')) layout() });
+            addEventListener('keydown', function (e) { if (!ov.classList.contains('on')) return; if (e.key === 'ArrowRight') go(idx + 1); if (e.key === 'ArrowLeft') go(idx - 1); if (e.key === 'Escape') close(); });
+        })();
+    </script>
+</body>
+
+</html>
